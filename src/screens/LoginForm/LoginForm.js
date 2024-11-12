@@ -4,11 +4,15 @@ import './LoginForm.css';
 import '../../App.css';
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomError from "../../components/CustomError/CustomError";
+import {login} from "../../services/authService";
+import {toast, ToastContainer} from "react-toastify";
+import CustomLoader from "../../components/CustomLoader/CustomLoader";
 
 function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     function submitLogin() {
         if(!username || !password) {
@@ -18,8 +22,20 @@ function LoginForm() {
 
         setError('');
 
-        console.log('username:', username);
-        console.log('password:', password);
+        setIsLoading(true);
+        login(username, password).then(() => {
+            setIsLoading(false);
+            toast.success(`Welcome ${username}!`);
+        }).catch((error) => {
+            setIsLoading(false);
+            toast.error(error.response.data.message);
+        });
+    }
+
+    if(isLoading) {
+        return (
+            <CustomLoader />
+        );
     }
 
     return (
@@ -47,6 +63,8 @@ function LoginForm() {
                     <CustomButton title="Login" onClick={submitLogin}/>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     );
 }

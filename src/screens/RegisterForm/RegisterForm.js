@@ -4,12 +4,17 @@ import './RegisterForm.css';
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomError from "../../components/CustomError/CustomError";
+import {register} from "../../services/authService";
+import 'react-toastify/dist/ReactToastify.css';
+import {toast, ToastContainer} from "react-toastify";
+import CustomLoader from "../../components/CustomLoader/CustomLoader";
 
 function RegisterForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     function submitRegister() {
         if (!username || !password || !confirmPassword) {
@@ -24,9 +29,20 @@ function RegisterForm() {
 
         setError('');
 
-        console.log('Username:', username);
-        console.log('Password:', password);
-        console.log('ConfirmPassword:', confirmPassword);
+        setIsLoading(true);
+        register(username, password).then(() => {
+                setIsLoading(false);
+                toast.success('Registration successful! Please log in.')
+        }).catch((error) =>  {
+                setIsLoading(false);
+                toast.error(error.response.data.message)
+        });
+    }
+
+    if(isLoading) {
+        return (
+            <CustomLoader />
+        );
     }
 
     return (
@@ -51,7 +67,7 @@ function RegisterForm() {
                 />
 
                 <CustomInput
-                    label="Password"
+                    label="Confirm Password"
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -61,6 +77,8 @@ function RegisterForm() {
                     <CustomButton title="Register" onClick={submitRegister}/>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     );
 }
