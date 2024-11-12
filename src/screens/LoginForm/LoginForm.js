@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
-import CustomInput from "../components/CustomInput/CustomInput";
+import CustomInput from "../../components/CustomInput/CustomInput";
+import './LoginForm.css';
+import '../../App.css';
+import CustomButton from "../../components/CustomButton/CustomButton";
+import CustomError from "../../components/CustomError/CustomError";
 
 function LoginForm() {
     const [username, setUsername] = useState('');
@@ -22,9 +26,9 @@ function LoginForm() {
         <div className="form-container">
             <h2 className="form-title">Login</h2>
 
-            {error && <p className="error-message">{error}</p>}
+            {error && <CustomError message={error} />}
 
-            <form onSubmit={submitLogin} className="form">
+            <div onSubmit={submitLogin} className="form">
                 <CustomInput
                     label="Username"
                     type="text"
@@ -38,7 +42,11 @@ function LoginForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-            </form>
+
+                <div className="button-container">
+                    <CustomButton title="Login" onClick={submitLogin}/>
+                </div>
+            </div>
         </div>
     );
 }

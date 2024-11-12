@@ -1,9 +1,10 @@
-
+import React from 'react';
+import './CustomInput.css';
 
 function CustomInput({ label, type, value, onChange}) {
     return (
         <div className="input-group">
-            <label>{label}:</label>
+            <label className="input-label">{label}:</label>
             <input
                 type={type}
                 value={value}
