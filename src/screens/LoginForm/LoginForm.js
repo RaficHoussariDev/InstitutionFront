@@ -5,14 +5,18 @@ import '../../App.css';
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomError from "../../components/CustomError/CustomError";
 import {login} from "../../services/authService";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
+import {saveToken} from "../../services/tokenService";
+import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     function submitLogin() {
         if(!username || !password) {
@@ -23,11 +27,14 @@ function LoginForm() {
         setError('');
 
         setIsLoading(true);
-        login(username, password).then(() => {
+        login(username, password).then((response) => {
             setIsLoading(false);
+            saveToken(response);
             toast.success(`Welcome ${username}!`);
+            navigate("/institutions");
         }).catch((error) => {
             setIsLoading(false);
+            console.log(error);
             toast.error(error.response.data.message);
         });
     }
@@ -63,8 +70,6 @@ function LoginForm() {
                     <CustomButton title="Login" onClick={submitLogin}/>
                 </div>
             </div>
-
-            <ToastContainer />
         </div>
     );
 }

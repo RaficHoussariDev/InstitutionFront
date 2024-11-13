@@ -1,27 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
-import LoginForm from "./screens/LoginForm/LoginForm";
-import {useState} from "react";
-import RegisterForm from "./screens/RegisterForm/RegisterForm";
-import CustomButton from "./components/CustomButton/CustomButton";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import LoginRegister from "./screens/LoginRegister/LoginRegister";
+import InstitutionList from "./screens/InstitutionList/InstitutionList";
+import {getToken} from "./services/tokenService";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
 
 function App() {
-    const [isLogin, setIsLogin] = useState(true);
+    const isLoggedIn = !!getToken();
+
+    function PrivateRoute({children}) {
+        return isLoggedIn ? children : <Navigate to="/" />
+    }
 
     return (
-        <div className="App">
-            <img src={logo} className="App-logo" alt="logo"/>
-            {isLogin ? <LoginForm/> : <RegisterForm/>}
+        <BrowserRouter>
+            <ToastContainer />
+            <Routes>
+                <Route path="*" element={ <Navigate to={ isLoggedIn ? "/institutions" : "/" } /> } />
+                <Route path="/" element={ <LoginRegister /> } />
 
-            <div className="button-container">
-                <CustomButton
-                    onClick={() => setIsLogin(!isLogin)}
-                    title={isLogin ? 'Create User' : 'Back to Login'}
-                    backgroundColor="transparent"
-                    textColor="grey"
+                <Route
+                    path="/institutions"
+                    element={
+                        <PrivateRoute>
+                            <InstitutionList />
+                        </PrivateRoute>
+                    }
                 />
-            </div>
-        </div>
+            </Routes>
+        </BrowserRouter>
     );
 }
 

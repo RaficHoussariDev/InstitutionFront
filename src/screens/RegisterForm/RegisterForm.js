@@ -5,8 +5,7 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomError from "../../components/CustomError/CustomError";
 import {register} from "../../services/authService";
-import 'react-toastify/dist/ReactToastify.css';
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 
 function RegisterForm() {
@@ -77,8 +76,6 @@ function RegisterForm() {
                     <CustomButton title="Register" onClick={submitRegister}/>
                 </div>
             </div>
-
-            <ToastContainer />
         </div>
     );
 }
