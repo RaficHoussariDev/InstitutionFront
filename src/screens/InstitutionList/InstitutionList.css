@@ -1,0 +1,38 @@
+.loader-container {
+    margin-top: 20px;
+}
+
+.institution-list-container {
+    padding: 20px;
+}
+
+.institution-table {
+    border-collapse: collapse;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.institution-table th, .institution-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.institution-table th {
+    background-color: #f2f2f2;
+}
+
+.status-circle {
+    border-radius: 50%;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+
+.status-circle.active {
+    background-color: green;
+}
+
+.status-circle.inactive {
+    background-color: red;
+}

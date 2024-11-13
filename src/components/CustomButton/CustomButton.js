@@ -1,10 +1,11 @@
 import React from "react";
 import './CustomButton.css';
 
-function CustomButton({ title, backgroundColor, textColor, onClick }) {
+function CustomButton({ title, backgroundColor, textColor, width, onClick }) {
     const buttonStyle = {
         backgroundColor: backgroundColor || '#007bff',
-        color: textColor || 'white'
+        color: textColor || 'white',
+        width: width || '100%'
     };
 
     return (
