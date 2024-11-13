@@ -31,6 +31,27 @@
 
 /* end in Register and Login Forms */
 
+/* dropdown */
+
+.Select__control {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.Select__menu {
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.Select__single-value {
+  font-weight: bold;
+  color: #333;
+}
+
+/* end dropdown */
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

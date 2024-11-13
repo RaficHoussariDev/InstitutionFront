@@ -36,3 +36,13 @@
 .status-circle.inactive {
     background-color: red;
 }
+
+.filter-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.checkbox-filter-container {
+    margin: auto 0;
+}
