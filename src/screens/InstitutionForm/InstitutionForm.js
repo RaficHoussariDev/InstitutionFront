@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import '../../App.css';
 import CustomButton from "../../components/CustomButton/CustomButton";
@@ -12,7 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function InstitutionForm() {
     const location = useLocation();
-    const { id } = useParams();
 
     const institution = location.state?.institution;
     const isNewInstitution = !institution;
@@ -58,7 +57,7 @@ function InstitutionForm() {
         setErrors([]);
 
         const newInstitution = {
-            id: isNewInstitution ? 0 : id,
+            id: isNewInstitution ? 0 : institution.id,
             name: newName,
             code: newCode,
             isActive: isNewActive,
