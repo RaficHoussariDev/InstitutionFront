@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './InstitutionList.css';
 import {deleteInstitution, getInstitutions} from "../../services/institutionService";
 import {toast, ToastContainer} from "react-toastify";
@@ -6,6 +6,7 @@ import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
 import {useNavigate} from "react-router-dom";
+import {useReactToPrint} from "react-to-print";
 
 function InstitutionList() {
     const [institutions, setInstitutions] = useState([]);
@@ -14,6 +15,8 @@ function InstitutionList() {
     const [showActiveOnly, setShowActiveOnly] = useState(false);
 
     const navigate = useNavigate();
+    const contentRef = useRef();
+    const reactToPrintFn = useReactToPrint({ contentRef });
 
     useEffect(() => {
         getInstitutionList();
@@ -113,20 +116,23 @@ function InstitutionList() {
                     title="Create Institution"
                     onClick={ () => navigateToInstitutionForm(null) }
                 />
+
+                <CustomButton title="Print" onClick={reactToPrintFn} />
             </div>
 
-            <table className="institution-table">
-                <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                    {finalFilteredInstructions.map((institution, index) => (
+            <div ref={contentRef}>
+                <table className="institution-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {finalFilteredInstructions.map((institution, index) => (
                             <tr key={index}>
                                 <td>{institution.code}</td>
                                 <td>{institution.name}</td>
@@ -135,7 +141,7 @@ function InstitutionList() {
                                     <CustomButton
                                         title="Edit"
                                         width="50%"
-                                        onClick={() => navigateToInstitutionForm(institution) }
+                                        onClick={() => navigateToInstitutionForm(institution)}
                                     />
                                 </td>
                                 <td>
@@ -147,9 +153,10 @@ function InstitutionList() {
                                     />
                                 </td>
                             </tr>
-                    ))}
-                </tbody>
-            </table>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             <ToastContainer/>
         </div>
