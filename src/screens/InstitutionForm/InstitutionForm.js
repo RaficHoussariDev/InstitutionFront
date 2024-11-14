@@ -8,6 +8,7 @@ import CustomError from "../../components/CustomError/CustomError";
 import {upsertInstitution} from "../../services/institutionService";
 import {toast, ToastContainer} from "react-toastify";
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
+import 'react-toastify/dist/ReactToastify.css';
 
 function InstitutionForm() {
     const location = useLocation();
@@ -76,14 +77,9 @@ function InstitutionForm() {
         });
     }
 
-    if(isLoading) {
-        return (
-            <CustomLoader />
-        );
-    }
-
     return (
         <div>
+            { isLoading && <CustomLoader /> }
             <div className="form-container institution-form-container">
 
                 {errors.length > 0 && errors.map((error, index) => {
