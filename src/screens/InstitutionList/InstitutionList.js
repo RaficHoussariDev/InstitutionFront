@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './InstitutionList.css';
-import {getInstitutions} from "../../services/institutionService";
+import {deleteInstitution, getInstitutions} from "../../services/institutionService";
 import {toast, ToastContainer} from "react-toastify";
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import CustomButton from "../../components/CustomButton/CustomButton";
@@ -16,14 +16,7 @@ function InstitutionList() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setIsLoading(true);
-        getInstitutions().then((response) => {
-            setInstitutions(response);
-            setIsLoading(false);
-        }).catch(() => {
-            toast.error("Unable to get institutions! Try again later.");
-            setIsLoading(false);
-        });
+        getInstitutionList();
     }, []);
 
     const dropdownOptions = institutions.map((institution) => ({
@@ -40,6 +33,17 @@ function InstitutionList() {
     const finalFilteredInstructions = showActiveOnly
         ? filteredInstitutions.filter(institution => institution.isActive)
         : filteredInstitutions;
+
+    function getInstitutionList() {
+        setIsLoading(true);
+        getInstitutions().then((response) => {
+            setInstitutions(response);
+            setIsLoading(false);
+        }).catch(() => {
+            toast.error("Unable to get institutions! Try again later.");
+            setIsLoading(false);
+        });
+    }
 
     function onSelectInstitution(selectedOptions) {
         setSelectedInstitutions(selectedOptions);
@@ -62,17 +66,26 @@ function InstitutionList() {
         );
     }
 
-    if(isLoading) {
-        return (
-            <div className="loader-container">
-                <CustomLoader />
-            </div>
-        );
+    function onDeleteInstitution(institutionId) {
+        setIsLoading(true);
+
+        deleteInstitution(institutionId).then(() => {
+            getInstitutionList();
+            toast.success("Institution deleted successfully!");
+        }).catch(() => {
+            toast.error("Unable to delete institution. Try again later!");
+        });
     }
 
     return (
         <div className="institution-list-container">
             <h2>Institutions</h2>
+
+            {isLoading && (
+                <div className="loader-container">
+                    <CustomLoader/>
+                </div>
+            )}
 
             <div className="filter-container">
                 <CustomDropdown
@@ -83,6 +96,7 @@ function InstitutionList() {
                     value={selectedInstitutions}
                     onChange={onSelectInstitution}
                 />
+
                 <div className="checkbox-filter-container">
                     <label>
                         <input
@@ -119,7 +133,12 @@ function InstitutionList() {
                                     />
                                 </td>
                                 <td>
-                                    <CustomButton title="Delete" backgroundColor="red" width="50%" />
+                                    <CustomButton
+                                        title="Delete"
+                                        backgroundColor="red"
+                                        width="50%"
+                                        onClick={() => onDeleteInstitution(institution.id)}
+                                    />
                                 </td>
                             </tr>
                     ))}

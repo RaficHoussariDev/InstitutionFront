@@ -11,3 +11,7 @@ export async function getInstitutions() {
 export async function upsertInstitution(institution) {
     await api.post(API_BASE_URL, { ...institution });
 }
+
+export async function deleteInstitution(institutionId) {
+    await api.delete(API_BASE_URL + `/${institutionId}`);
+}
