@@ -5,12 +5,15 @@ import {toast, ToastContainer} from "react-toastify";
 import CustomLoader from "../../components/CustomLoader/CustomLoader";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
+import {useNavigate} from "react-router-dom";
 
 function InstitutionList() {
     const [institutions, setInstitutions] = useState([]);
     const [selectedInstitutions, setSelectedInstitutions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [showActiveOnly, setShowActiveOnly] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsLoading(true);
@@ -28,14 +31,6 @@ function InstitutionList() {
         label: institution.name,
     }));
 
-    function onSelectInstitution(selectedOptions) {
-        setSelectedInstitutions(selectedOptions);
-    }
-
-    function onCheckedActiveOnly() {
-        setShowActiveOnly(!showActiveOnly);
-    }
-
     const filteredInstitutions = selectedInstitutions.length
         ? institutions.filter(institution =>
             selectedInstitutions.some(selected => selected.value === institution.id)
@@ -46,10 +41,25 @@ function InstitutionList() {
         ? filteredInstitutions.filter(institution => institution.isActive)
         : filteredInstitutions;
 
+    function onSelectInstitution(selectedOptions) {
+        setSelectedInstitutions(selectedOptions);
+    }
+
+    function onCheckedActiveOnly() {
+        setShowActiveOnly(!showActiveOnly);
+    }
+
     function renderStatus(isActive) {
         return isActive
             ? (<span className="status-circle active" title="Active"></span>)
             : (<span className="status-circle inactive" title="Inactive"></span>);
+    }
+
+    function navigateToEdit(institution) {
+        navigate(
+            `/institution/${institution.id}`,
+            { state: {institution} }
+        );
     }
 
     if(isLoading) {
@@ -96,18 +106,22 @@ function InstitutionList() {
                 </tr>
                 </thead>
                 <tbody>
-                {finalFilteredInstructions.map((institution, index) => (
-                        <tr key={index}>
-                            <td>{institution.code}</td>
-                            <td>{institution.name}</td>
-                            <td>{renderStatus(institution.isActive)}</td>
-                            <td>
-                                <CustomButton title="Edit" width="50%" />
-                            </td>
-                            <td>
-                                <CustomButton title="Delete" backgroundColor="red" width="50%" />
-                            </td>
-                        </tr>
+                    {finalFilteredInstructions.map((institution, index) => (
+                            <tr key={index}>
+                                <td>{institution.code}</td>
+                                <td>{institution.name}</td>
+                                <td>{renderStatus(institution.isActive)}</td>
+                                <td>
+                                    <CustomButton
+                                        title="Edit"
+                                        width="50%"
+                                        onClick={() => navigateToEdit(institution) }
+                                    />
+                                </td>
+                                <td>
+                                    <CustomButton title="Delete" backgroundColor="red" width="50%" />
+                                </td>
+                            </tr>
                     ))}
                 </tbody>
             </table>

@@ -7,3 +7,7 @@ export async function getInstitutions() {
 
     return response.data;
 }
+
+export async function upsertInstitution(institution) {
+    await api.post(API_BASE_URL, { ...institution });
+}

@@ -50,7 +50,7 @@ function LoginForm() {
 
             {error && <CustomError message={error} />}
 
-            <div onSubmit={submitLogin} className="form">
+            <div className="form">
                 <CustomInput
                     label="Username"
                     type="text"

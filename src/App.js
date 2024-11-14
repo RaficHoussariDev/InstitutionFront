@@ -6,6 +6,7 @@ import {getToken} from "./services/tokenService";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import React from "react";
+import InstitutionForm from "./screens/InstitutionForm/InstitutionForm";
 
 function App() {
     const isLoggedIn = !!getToken();
@@ -26,6 +27,15 @@ function App() {
                     element={
                         <PrivateRoute>
                             <InstitutionList />
+                        </PrivateRoute>
+                    }
+                />
+
+                <Route
+                    path="/institution/:id"
+                    element={
+                        <PrivateRoute>
+                            <InstitutionForm />
                         </PrivateRoute>
                     }
                 />

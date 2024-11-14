@@ -11,6 +11,10 @@
   text-align: center;
 }
 
+.checkbox-filter-container {
+  margin: auto 0;
+}
+
 /* in Register and Login Forms */
 .form-container {
   background-color: #f4f4f9;
