@@ -59,9 +59,10 @@ function InstitutionList() {
             : (<span className="status-circle inactive" title="Inactive"></span>);
     }
 
-    function navigateToEdit(institution) {
+    function navigateToInstitutionForm(institution) {
+        const id = institution ? institution.id : 0;
         navigate(
-            `/institution/${institution.id}`,
+            `/institution/${id}`,
             { state: {institution} }
         );
     }
@@ -107,6 +108,11 @@ function InstitutionList() {
                         Show Active Institutions Only
                     </label>
                 </div>
+
+                <CustomButton
+                    title="Create Institution"
+                    onClick={ () => navigateToInstitutionForm(null) }
+                />
             </div>
 
             <table className="institution-table">
@@ -129,7 +135,7 @@ function InstitutionList() {
                                     <CustomButton
                                         title="Edit"
                                         width="50%"
-                                        onClick={() => navigateToEdit(institution) }
+                                        onClick={() => navigateToInstitutionForm(institution) }
                                     />
                                 </td>
                                 <td>
